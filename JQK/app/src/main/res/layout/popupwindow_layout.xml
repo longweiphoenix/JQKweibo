@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/radar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="雷达"
+        android:drawableLeft="@mipmap/radar_white"
+        android:drawablePadding="10dp"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/scan"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="扫一扫"
+        android:drawableLeft="@mipmap/scan"
+        android:drawablePadding="10dp"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/taxi"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="打车"
+        android:textColor="@android:color/white"
+        android:drawableLeft="@mipmap/taxi"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

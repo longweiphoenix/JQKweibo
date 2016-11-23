@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+
+        <LinearLayout
+            android:id="@+id/content_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#3c3c3c"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="0.5dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:drawableTop="@mipmap/home_solid"
+                android:gravity="center_horizontal"
+                android:text="首页"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/news"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:drawableTop="@mipmap/news"
+                android:gravity="center_horizontal"
+                android:text="消息"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="36dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/add_shape"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/add" />
+
+            <RadioButton
+                android:id="@+id/find"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:drawableTop="@mipmap/search_frame"
+                android:gravity="center_horizontal"
+                android:text="发现"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/me"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:drawableTop="@mipmap/me"
+                android:gravity="center_horizontal"
+                android:text="我"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+        </RadioGroup>
+    </FrameLayout>
+</LinearLayout>
