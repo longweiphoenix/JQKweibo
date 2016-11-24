@@ -1,4 +1,4 @@
-package com.example.administrator.jqk;
+package com.example.along;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.along.jqk.R;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -69,6 +70,13 @@ public class WBAuthActivity extends Activity {
                 mSsoHandler.authorize(new AuthListener());
             }
         });
+        findViewById(R.id.obtain_token_hint).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(WBAuthActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -82,12 +90,12 @@ public class WBAuthActivity extends Activity {
         }
     }
 
-    class AuthListener implements WeiboAuthListener{
+    class AuthListener implements WeiboAuthListener {
 
         @Override
         public void onComplete(Bundle bundle) {
             //从bundle中解析token
-            mAccessToken=Oauth2AccessToken.parseAccessToken(bundle);
+            mAccessToken= Oauth2AccessToken.parseAccessToken(bundle);
             Log.i("AuthListener","worked");
             //从这里获取用户输入的电话号码信息
             String phoneNum=mAccessToken.getPhoneNum();

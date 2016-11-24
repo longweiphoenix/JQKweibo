@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.administrator.jqk;
+package com.example.along;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,8 +29,7 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
  * @since 2013-10-07
  */
 public class AccessTokenKeeper {
-    private static final String PREFERENCES_NAME = "com_weibo_sdk_android";
-
+    private static final String PREFERENCES_NAME = "com.example.along";
     private static final String KEY_UID           = "uid";
     private static final String KEY_ACCESS_TOKEN  = "access_token";
     private static final String KEY_EXPIRES_IN    = "expires_in";

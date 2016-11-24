@@ -1,4 +1,4 @@
-package com.example.administrator.jqk;
+package com.example.along.jqk;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

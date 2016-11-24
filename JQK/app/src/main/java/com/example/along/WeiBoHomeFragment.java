@@ -1,4 +1,4 @@
-package com.example.administrator.jqk;
+package com.example.along;
 
 import android.app.Fragment;
 import android.os.AsyncTask;
@@ -15,16 +15,23 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sina.weibo.sdk.auth.AuthInfo;
+import com.example.along.jqk.R;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
-import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/18.
@@ -34,28 +41,26 @@ public class WeiBoHomeFragment extends Fragment implements View.OnClickListener{
     TextView friend_focus,userName,radarPop,scan,taxi;
     ListView listView;
     LayoutInflater layoutInflater;
-    private SsoHandler mSsoHandler;
-    private AuthInfo mAuthInfo;
+    Oauth2AccessToken accessToken;
+    List<WeiBoHome> list;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        layoutInflater=inflater;
         View view=inflater.inflate(R.layout.wei_bo_home_fragment,null);
         radar= (ImageView) view.findViewById(R.id.radar);
         friend_focus= (TextView) view.findViewById(R.id.friend_focus);
 
         //添加微博内容
         listView= (ListView) view.findViewById(R.id.list_weibo);
-        // 创建微博实例
-        //mWeiboAuth = new WeiboAuth(this, Constants.APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
-        // 快速授权时，请不要传入 SCOPE，否则可能会授权不成功
-        mAuthInfo=new AuthInfo(getActivity(),Constants.APP_KEY,Constants.REDIRECT_URL,Constants.SCOPE);
-        mSsoHandler=new SsoHandler(getActivity(),mAuthInfo);
-
-
-
+        accessToken=AccessTokenKeeper.readAccessToken(getActivity());
+        WeiboAsyncTask weiboAsyncTask=new WeiboAsyncTask();
+        weiboAsyncTask.execute(accessToken.getToken());
+        getJSON();
+        listView.setAdapter(new MyAdapter(list,getActivity()));
         userName= (TextView) view.findViewById(R.id.user_name);
-        layoutInflater=inflater;
-        return super.onCreateView(inflater, container, savedInstanceState);
+
+        return view;
     }
 
     @Override
@@ -99,26 +104,28 @@ public class WeiBoHomeFragment extends Fragment implements View.OnClickListener{
         userPopupWindow.setContentView(view);
         userPopupWindow.showAsDropDown(userName);
     }
-    public void addData(MyAdapter adapter){
-        mSsoHandler.authorize(new AuthListener());
-    }
+    StringBuilder stringBuilder;
     //异步线程获取数据
     public class WeiboAsyncTask extends AsyncTask<String, Integer, String> {
         @Override
         protected String doInBackground(String... params) {
+            stringBuilder=new StringBuilder();
             try {
                 URL url = new URL(params[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(5000);
-                connection.setRequestProperty("access_token",mAccessToken.getToken());
-                connection.setRequestProperty("count","50");
-                connection.setRequestProperty("page","1");
-                connection.setRequestProperty("base_app","0");
-
+                Oauth2AccessToken oauth2AccessToken=AccessTokenKeeper.readAccessToken(getActivity());
+                connection.setRequestProperty("access_token",oauth2AccessToken.getToken());
                 connection.connect();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                InputStream inputStream=connection.getInputStream();
+                BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(inputStream));
+                String s="";
+                while((s=bufferedReader.readLine())!=null){
+                    stringBuilder.append(s);
+                }
+                bufferedReader.close();
+                inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -130,8 +137,8 @@ public class WeiBoHomeFragment extends Fragment implements View.OnClickListener{
             super.onPostExecute(s);
         }
     }
-    Oauth2AccessToken mAccessToken;
-    class AuthListener implements WeiboAuthListener {
+    /*Oauth2AccessToken mAccessToken;*/
+    /*class AuthListener implements WeiboAuthListener {
 
         @Override
         public void onComplete(Bundle bundle) {
@@ -168,7 +175,22 @@ public class WeiBoHomeFragment extends Fragment implements View.OnClickListener{
         public void onCancel() {
             Toast.makeText(getActivity(), "取消", Toast.LENGTH_LONG).show();
         }
+    }*/
+    public void getJSON(){
+        if(stringBuilder!=null){
+            try {
+                list=new ArrayList<WeiBoHome>();
+                WeiBoHome weiBoHome=new WeiBoHome();
+                JSONObject jsonObject=new JSONObject(stringBuilder.toString());
+                JSONArray jsonArray=jsonObject.getJSONArray("statuses");
+                JSONObject object=jsonArray.getJSONObject(0);
+                weiBoHome.commentNums=object.getInt("reposts_count");
+                weiBoHome.content=object.getString("text");
+                list.add(weiBoHome);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
-
 
 }
